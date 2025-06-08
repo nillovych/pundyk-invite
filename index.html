@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Пундик 💖 Запрошення</title>
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+  <style>
+    * { box-sizing: border-box; }
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .scene {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      height: 100vh;
+      padding: 2em;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .scene.active {
+      display: flex;
+    }
+    .scene.bg0 { background-image: url('source/bg_0.jpg'); }
+    .scene.bg1 { background-image: url('source/bg_1.jpg'); }
+    .scene.bg2 { background-image: url('source/bg_2.jpg'); }
+    .scene.bg3 { background-image: url('source/bg_3.jpg'); }
+    .scene.bg4 { background-image: url('source/bg_4.jpg'); }
+    .scene.bg5 { background-image: url('source/bg_5.jpg'); }
+
+    h1, p {
+      color: white;
+      text-shadow: 1px 1px 4px black;
+    }
+    button {
+      margin: 1em;
+      padding: 1em 2em;
+      font-size: 1.2em;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #ff1493;
+    }
+    button:disabled {
+      background: #aaa;
+      cursor: not-allowed;
+    }
+    audio { display: none; }
+    .swiper {
+      width: 90%;
+      max-width: 600px;
+    }
+    .swiper-slide {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .swiper-slide img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-top: 1em;
+    }
+    .green-btn {
+      background-color: #28a745;
+    }
+
+    .green-btn:hover {
+      background-color: #218838;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="scene0" class="scene active bg0">
+    <h1>Як мені знати, що це ти? Введи кодове слово 💬</h1>
+    <input type="text" id="password" placeholder="Ти точно знаєш це слово...">
+    <button onclick="checkPassword()">Увійти</button>
+  </div>
+
+  <div id="scene1" class="scene bg1">
+    <h1>Доброго дня, мій улюблений Пундику 💖</h1>
+    <p>Чи ти маєш час цієї неділі 14.06 о 16:00 за Києвом та бажання провести його зі мною?</p>
+    <button onclick="nextScene()">Так</button>
+    <button disabled>Ні</button>
+  </div>
+
+  <div id="scene2" class="scene bg2">
+    <h1>Вітаю тебе!!! 🎉</h1>
+    <p>💥 Салют! 💥</p>
+    <button onclick="nextScene()">❤️</button>
+  </div>
+
+  <div id="scene3" class="scene bg3">
+    <h1>Хочеш введу тебе в екскурс цієї суботи?</h1>
+    <button onclick="nextScene()">Так</button>
+    <button onclick="nextScene()">ДУУУЖЖЕЕЕ</button>
+  </div>
+
+  <div id="scene4" class="scene bg4">
+    <h1>Ось тобі посилання на нашу зустріч</h1>
+    <a href="https://meet.google.com/wix-cehn-pqo" target="_blank">
+      <button class="green-btn">Посилання на нашу зустріч. Не забудь прийти. Вона буде 14.06 о 16:00 за Києвом!!!</button>
+    </a>
+    <button onclick="nextScene()">Так, а план побачення де?</button>
+  </div>
+
+  <div id="scene5" class="scene bg5">
+    <h1>Так ось план, він тут:</h1>
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <p><strong>1. Монополія</strong>: з моїм красносердешним милим Пундиком</p>
+          <img src="source/mono.jpg" />
+        </div>
+        <div class="swiper-slide">
+          <p><strong>2. Романтична вечеря</strong> у стилі провансальського чогось 💐🥖</p>
+          <img src="source/dinner.jpg" />
+        </div>
+        <div class="swiper-slide">
+          <p><strong>3. Перегляд Штольні</strong> 🍿</p>
+          <img src="source/stolna.jpg" />
+        </div>
+        <div class="swiper-slide">
+          <p><strong>4. Сон із коханою людиною 💤</strong></p>
+          <img src="source/son.jpg" />
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+
+  <audio id="bgmusic" loop></audio>
+
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script>
+    const musics = [
+      'source/mus_0.mp3',
+    ];
+
+    let current = 0;
+
+    function checkPassword() {
+      const val = document.getElementById('password').value;
+      if (val.toLowerCase().trim() === 'пундик') {
+        document.getElementById('scene0').classList.remove('active');
+        document.getElementById('scene1').classList.add('active');
+
+        const music = document.getElementById('bgmusic');
+        music.src = musics[0];
+        music.play().catch(err => {
+          console.log('Браузер заблокував автоматичне відтворення. Натисни ще раз :)');
+        });
+
+        current = 1;
+      } else {
+        alert('Невірне слово 🙃');
+      }
+    }
+
+    function nextScene() {
+      document.getElementById('scene' + current).classList.remove('active');
+      current++;
+      if (current < 6) {
+        document.getElementById('scene' + current).classList.add('active');
+        if (current === 5) initSlider();
+      }
+    }
+
+    function initSlider() {
+      new Swiper('.swiper', {
+        pagination: { el: '.swiper-pagination' },
+        loop: true
+      });
+    }
+  </script>
+</body>
+</html>
